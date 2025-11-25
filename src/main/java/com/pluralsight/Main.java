@@ -9,23 +9,30 @@ public class Main {
         String user = "root";
         String password = "yearup";
 
-        // Try connecting to the database using JDBC
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             System.out.println("Connected to Northwind!");
 
+            String sql = "SELECT ProductID, ProductName, UnitPrice, UnitsInStock FROM products";
 
-            String sql = "SELECT ProductName FROM products";  // SQL query to get all product names
-            try (Statement stmt = conn.createStatement(); // Execute the query and loop through the results
+            try (Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(sql)) {
 
-                while (rs.next()) {   // Display each product name
-                    System.out.println(rs.getString("ProductName"));
+                // TABLE FORMAT
+                System.out.println("\n=== PRODUCT LIST ===\n");
+                System.out.printf("%-5s %-30s %-10s %-10s\n", "Id", "Name", "Price", "Stock");
+                System.out.println("---------------------------------------------------------------");
+
+                while (rs.next()) {
+                    System.out.printf("%-5d %-30s %-10.2f %-10d\n",
+                            rs.getInt("ProductID"),
+                            rs.getString("ProductName"),
+                            rs.getDouble("UnitPrice"),
+                            rs.getInt("UnitsInStock"));
                 }
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();  // If something goes wrong, show the error
+            e.printStackTrace();
         }
-
-
     }
 }
