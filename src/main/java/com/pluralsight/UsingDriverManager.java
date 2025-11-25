@@ -1,6 +1,9 @@
 package com.pluralsight;
+
 import java.sql.*;
+
 public class UsingDriverManager {
+
     public static void main(String[] args) throws SQLException,
             ClassNotFoundException {
         if (args.length != 2) {
